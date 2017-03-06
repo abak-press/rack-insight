@@ -73,21 +73,30 @@
   </table>
 <% end %>
 
-<script type="text/javascript" charset="utf-8">
-  jQuery(function () {
-      jQuery("#rack-insight .rack-insight_delete_cache").click(function (evt) {
-        jQuery.ajax({
-url: this.href,
-beforeSend: function() {
-jQuery(evt.target).parent("td, th").addClass("rack-insight_spinner");
-},
-success: function () {
-jQuery(evt.target).parent("td, th").removeClass("rack-insight_spinner");
-jQuery(evt.target).replaceWith("Deleted");
-}
-});
+<script>
+  app.modules.rackInsightCachePanel = (function(self) {
+    function _listener() {
+      $("#rack-insight .rack-insight_delete_cache").click(function(event) {
+        event.preventDefault();
+        var $this = $(this);
 
-        return false;
+        $this.closest('td, th').addClass('rack-insight_spinner');
+
+        $.ajax({
+          url: this.href,
+          success: function () {
+            $this
+              .closest('td, th').removeClass('rack-insight_spinner').end()
+              .replaceWith('Deleted');
+          }
         });
       });
-    </script>
+    }
+
+    self.load = function() {
+      _listener();
+    };
+
+    return self;
+  })(app.modules.rackInsightCachePanel || {});
+</script>
