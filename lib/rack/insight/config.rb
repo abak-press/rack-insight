@@ -33,7 +33,8 @@ module Rack::Insight
                               'MemCache'      => [:instance, :decr, :get, :get_multi, :incr, :set, :add, :delete],
                               'Dalli::Client' => [:instance, :perform] } },
 #      :log_panel => The log panel configures its probes in its initializer
-      :sphinx => {:probes => {'Riddle::Client' => [:instance, :request]}},
+      :sphinx => {:probes => {'Riddle::Client' => [:instance, :request],
+                              'Sphinx::Integration::Extensions::Riddle::Client' => [:instance, :request]}},
       :sql => {:probes => Hash[%w{ PostgreSQLAdapter MysqlAdapter SQLiteAdapter
                   Mysql2Adapter OracleEnhancedAdapter }.map do |adapter|
                     ["ActiveRecord::ConnectionAdapters::#{adapter}", [:instance, :execute, :exec_query]]
